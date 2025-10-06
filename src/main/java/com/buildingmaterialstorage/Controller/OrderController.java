@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Controller;
 
+import com.buildingmaterialstorage.Categories.OrderCategory;
 import com.buildingmaterialstorage.Model.Customer;
 import com.buildingmaterialstorage.Model.Order;
 import com.buildingmaterialstorage.Service.OrderService;
@@ -37,6 +38,12 @@ public class OrderController {
     public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @PathVariable Order order) {
         Optional<Order> updatedOrder = orderService.updateOrderData(orderId, order);
         return updatedOrder.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/order/set-order-category")
+    public String setOrderCategory(Long orderId, OrderCategory orderCategory) {
+        orderService.setOrderCategory(orderId, orderCategory);
+        return "redirect:/main";
     }
 
     @DeleteMapping("/remove-order-by-id")

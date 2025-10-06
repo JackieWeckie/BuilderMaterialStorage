@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Controller;
 
+import com.buildingmaterialstorage.Categories.ProductCategory;
 import com.buildingmaterialstorage.Model.Product;
 import com.buildingmaterialstorage.Repository.ProductRepository;
 import com.buildingmaterialstorage.Service.ProductService;
@@ -32,6 +33,12 @@ public class ProductController {
     public String addProducts(Product product) {
         productService.addProduct(product);
         return "redirect:/main";
+    }
+
+    @PutMapping("/products/set-product-category")
+    public String setProductCategory(Long productId, ProductCategory productCategoryId) {
+        productService.setProductCategory(productId, productCategoryId);
+        return "redict:/products/add-product";
     }
 
     @PutMapping("/update-product-data")

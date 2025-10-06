@@ -1,11 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Корзина товаров</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="Cart.css">
+    <script src="CartScript.js"></script>
 </head>
 <body>
 
+<header class="bg-light p-3 d-flex justify-content-between align-items-center">
+    <h1 class="m-0">Building Material Storage</h1>
+    <div class="d-flex gap-3">
+        <a th:if="${user == null}" th:href="@{/login}" class="btn btn-outline-primary">Войти</a>
+        <a th:if="${user != null}" th:href="@{/profile}" class="btn btn-outline-primary">Личный кабинет</a>
+        <a th:href="@{/orders}" class="btn btn-outline-info">Заказы</a>
+    </div>
+</header>
+
+<nav class="container my-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+        <li class="breadcrumb-item active">Корзина</li>
+    </ol>
+</nav>
+
+<main class="container my-4">
+    <h2>Ваша корзина</h2>
+
+    <div th:if="${#lists.isEmpty(cart.items)}" class="alert alert-info">
+        Ваша корзина пуста. <a th:href="@{/}" class="alert-link">Перейти в каталог</a>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(cart.items)}">
+        <form th:action="@{/cart/update}" method="post">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img th:src="${item.product.imageUrl}" alt="Фото товара" class="img-thumbnail me-3"
+                                 style="width: 80px;">
+                            <a th:href="@{/product/{id}(id=${item.product.id})}" class="text-decoration-none"
+                               th:text="${item.product.name}">Название товара</a>
+                        </div>
+                    </td>
+                    <td th:text="${'₽' + item.product.price}"></td>
+                    <td>
+                        <input type="number" name="quantities" th:value="${item.quantity}" min="1" class="form-control"
+                               style="width: 80px;">
+                        <input type="hidden" name="productIds" th:value="${item.product.id}">
+                    </td>
+                    <td th:text="${'₽' + item.product.price * item.quantity}">₽1000</td>
+                    <td>
+                        <a th:href="@{/cart/remove/{id}(id=${item.product.id})}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end mb-4">
+                <div class="me-5">
+                    <h4>Итого: <span th:text="${cart.totalPrice + ' ₽'}">₽</span></h4>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-outline-secondary">Обновить</button>
+                <a th:href="@{/checkout}" class="btn btn-primary">Оформить заказ</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

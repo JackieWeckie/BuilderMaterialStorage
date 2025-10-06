@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Service;
 
+import com.buildingmaterialstorage.Categories.CustomerCategory;
 import com.buildingmaterialstorage.Model.Customer;
 import com.buildingmaterialstorage.Repository.CustomerRepository;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,13 @@ public class CustomerService {
             existingCustomer.setPassword(updatedCustomer.getPassword());
             return customerRepository.save(existingCustomer);
         });
+    }
+
+    public void setCustomerCategory(Long customerId, CustomerCategory customerCategoryId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        customer.setCustomerCategory(customerCategoryId);
+
+        customerRepository.save(customer);
     }
 
     public void removeCustomer(Long customerId) {

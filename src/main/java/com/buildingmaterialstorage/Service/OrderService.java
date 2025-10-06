@@ -1,6 +1,7 @@
 package com.buildingmaterialstorage.Service;
 
 import com.buildingmaterialstorage.Cart.Cart;
+import com.buildingmaterialstorage.Categories.OrderCategory;
 import com.buildingmaterialstorage.Enum.OrderEnum;
 import com.buildingmaterialstorage.Model.Order;
 import com.buildingmaterialstorage.Repository.OrderRepository;
@@ -47,6 +48,13 @@ public class OrderService {
             existingOrder.setProductAmount(updatedOrder.getProductAmount());
             return orderRepository.save(existingOrder);
         });
+    }
+
+    public void setOrderCategory(Long orderId, OrderCategory orderCategoryId) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        order.setOrderCategory(orderCategoryId);
+
+        orderRepository.save(order);
     }
 
     @Transactional
