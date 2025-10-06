@@ -1,5 +1,7 @@
 package com.buildingmaterialstorage.Service;
 
+import com.buildingmaterialstorage.Categories.ProductCategory;
+import com.buildingmaterialstorage.Categories.ProductCategoryRepository;
 import com.buildingmaterialstorage.Model.Product;
 import com.buildingmaterialstorage.Repository.ProductRepository;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,13 @@ public class ProductService {
             existingProduct.setProductPrice(updatedProduct.getProductPrice());
             return productRepository.save(existingProduct);
         });
+    }
+
+    public void setProductCategory(Long productId, ProductCategory productCategoryId) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        product.setProductCategory(productCategoryId);
+
+        productRepository.save(product);
     }
 
     public void removeProductByProductId(Long productId) {

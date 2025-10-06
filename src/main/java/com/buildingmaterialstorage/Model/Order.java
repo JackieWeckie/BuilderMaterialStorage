@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Model;
 
+import com.buildingmaterialstorage.Categories.OrderCategory;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -7,8 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-//@Getter
-//@Setter
 @Entity
 public class Order {
     @Id
@@ -26,6 +25,18 @@ public class Order {
     @Column(name = "product_amount", nullable = false)
     @NonNull
     private Integer productAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "order_category")
+    private OrderCategory orderCategory;
+
+    public OrderCategory getOrderCategory() {
+        return orderCategory;
+    }
+
+    public void setOrderCategory(OrderCategory orderCategory) {
+        this.orderCategory = orderCategory;
+    }
 
     public Long getOrderId() {
         return orderId;

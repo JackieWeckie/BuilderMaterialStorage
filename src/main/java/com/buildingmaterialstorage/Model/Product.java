@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Model;
 
+import com.buildingmaterialstorage.Categories.ProductCategory;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -23,6 +24,18 @@ public class Product {
     @Column(name = "customer_ID", nullable = false)
     @Size(max = 2_000_000_000)
     private double productPrice;
+
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "product_category")
+    private ProductCategory productCategory;
 
     public long getProductId() {
         return productId;

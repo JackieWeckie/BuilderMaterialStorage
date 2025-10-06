@@ -1,5 +1,6 @@
 package com.buildingmaterialstorage.Model;
 
+import com.buildingmaterialstorage.Categories.CustomerCategory;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -30,6 +31,18 @@ public class Customer {
     @Column(name = "customer_password", nullable = false)
     @Size(min = 8)
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_category")
+    private CustomerCategory customerCategory;
+
+    public CustomerCategory getCustomerCategory() {
+        return customerCategory;
+    }
+
+    public void setCustomerCategory(CustomerCategory customerCategory) {
+        this.customerCategory = customerCategory;
+    }
 
     public Long getCustomerId() {
         return customerId;
